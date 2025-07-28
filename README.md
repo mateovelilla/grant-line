@@ -1,3 +1,3 @@
 ## THE GRANT LINE
->  **screenshot**
+>  **files/diagram.excalidraw**
 <img src="./images/diagram.png">
