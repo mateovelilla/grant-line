@@ -1,0 +1,22 @@
+{
+  "name": "grant-line",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "engines": {
+    "node": "24",
+    "pnpm": ">=3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.4",
+    "@types/node": "^24.2.1"
+  },
+  "dependencies": {
+    "tsx": "^4.20.3"
+  }
+}
