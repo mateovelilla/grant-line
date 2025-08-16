@@ -9,7 +9,7 @@ const LIST_URL = BASE_URL + '/wiki/List_of_Canon_Characters'
 let characters:any[] = []
 let browser:any, page:any;
 test.beforeAll(async ({}, testInfo) => {
-  testInfo.setTimeout(80000)
+  testInfo.setTimeout(800000)
   browser = await chromium.launch({
     executablePath: "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
   })
@@ -30,8 +30,8 @@ test('has table with columns', async() => {
   }
 })
 test('extract columns', async({},testInfo) => {
-  testInfo.setTimeout(80000)
-  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr:nth-child(-n+40)')
+  testInfo.setTimeout(800000)
+  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr')
   const header = page.locator('.fandom-table:nth-of-type(1) thead th')
   const headers = await header.evaluateAll(elements => {
     return elements
@@ -46,20 +46,37 @@ test('extract columns', async({},testInfo) => {
     type
   }))
   for (const element of await locator.all()) {
-    try {
-      let character = {}
-      for (let i = 0; i < expected_columns.length; i++) {
-        const header = expected_columns[i];
-        character[header.label] = await element.locator(`td:nth-child(${header.index + 1})`).textContent()
-        if(header.type === 'link') {
-          const url = await element.locator(`td:nth-child(${header.index + 1}) > a`).getAttribute('href')
-          character['link'] = BASE_URL + url
-        } 
-      }
-      characters.push(character)
-    } catch (error) {
-      console.log(element)
-      console.log(error)
-    }
+     characters.push(element)      
   }
 })
+test('serializing columns', async({},testInfo) => {
+  testInfo.setTimeout(800000) 
+  for (let y = 0; y < characters.length; y++) {
+    const element = characters[y];
+    const tds_locator = element.locator('td')
+    let character = {}  
+    const tds_refactored = await tds_locator.evaluateAll(tds =>{
+      return tds.map(td=> {
+        const column = {href: '', text: ''}
+        if(Object.keys(td.childNodes).length > 1){
+          column.href = td.childNodes['0'].href
+        }
+        column.text = td.textContent
+        return column
+      })
+    })
+    for (let i = 0; i < expected_columns.length; i++) {
+      const header = expected_columns[i];
+      character[header.label] ??= tds_refactored[header.index]?.text || ''
+      if(header.type === 'link') {
+        character['link'] ??= tds_refactored[header.index].href
+      }
+    }
+    characters[y]= character
+  }
+  console.log({characters})
+})
+
+// test.afterAll(async ({}, testInfo) => {
+//   await browser.close()
+// });
