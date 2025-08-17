@@ -1,4 +1,6 @@
 import { test, expect, chromium } from '@playwright/test';
+import fs from "node:fs/promises";
+import { existsSync } from 'node:fs';
 let expected_columns = [
   { label: 'Name', index: 0, type: 'link'},
   { label: 'Year', index: 0, type: null},
@@ -9,7 +11,7 @@ const LIST_URL = BASE_URL + '/wiki/List_of_Canon_Characters'
 let characters:any[] = []
 let browser:any, page:any;
 test.beforeAll(async ({}, testInfo) => {
-  testInfo.setTimeout(800000)
+  testInfo.setTimeout(0)
   browser = await chromium.launch({
     executablePath: "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
   })
@@ -30,8 +32,8 @@ test('has table with columns', async() => {
   }
 })
 test('extract columns', async({},testInfo) => {
-  testInfo.setTimeout(800000)
-  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+3)')
+  testInfo.setTimeout(0)
+  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+4)')
   const header = page.locator('.fandom-table:nth-of-type(1) thead th')
   const headers = await header.evaluateAll(elements => {
     return elements
@@ -50,7 +52,7 @@ test('extract columns', async({},testInfo) => {
   }
 })
 test('serializing main table', async({},testInfo) => {
-  testInfo.setTimeout(800000) 
+  testInfo.setTimeout(0) 
   for (let y = 0; y < characters.length; y++) {
     const element = characters[y];
     const tds_locator = element.locator('td')
@@ -85,8 +87,8 @@ test('serializing main table', async({},testInfo) => {
   * 
   */
 test('Getting individual information', async({},testInfo) => {
-  testInfo.setTimeout(800000)
-  for (let i = 0; i < 2; i++) {
+  testInfo.setTimeout(0)
+  for (let i = 0; i < 4; i++) {
     const character = characters[i];
     await page.goto(character.link);
     const images = page.locator('#content aside img')
@@ -97,5 +99,10 @@ test('Getting individual information', async({},testInfo) => {
     character.description = p[0]
     character.appareance = p[1]  
   }
-  console.log(characters[0])
+  console.log(characters.length)
+})
+test('Generating Json', async({}, testInfo)=>{
+  const data = JSON.stringify(characters,null,2)
+  await fs.writeFile('characters.json', data, 'utf8')
+  expect(existsSync('characters.json')).toBeTruthy()
 })
