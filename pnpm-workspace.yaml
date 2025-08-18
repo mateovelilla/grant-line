@@ -1,2 +1,5 @@
 packages:
-  - 'scrapper'
+  - apps/*
+
+onlyBuiltDependencies:
+  - esbuild

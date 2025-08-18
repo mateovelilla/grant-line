@@ -1,9 +1,11 @@
 {
-  "name": "scrapper",
+  "name": "scraper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
     "start": "tsx src/index.ts",
     "lint": "biome lint ./src",
     "format": "biome format --write ./src",
@@ -13,7 +15,14 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "@hono/node-server": "^1.19.0",
+    "hono": "^4.9.2"
+  },
   "devDependencies": {
-        "@playwright/test": "^1.54.2"
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.3"
   }
 }
