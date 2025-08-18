@@ -33,7 +33,7 @@ test('has table with columns', async() => {
 })
 test('extract columns', async({},testInfo) => {
   testInfo.setTimeout(0)
-  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+4)')
+  const locator = page.locator('.fandom-table:nth-of-type(1) tbody tr')
   const header = page.locator('.fandom-table:nth-of-type(1) thead th')
   const headers = await header.evaluateAll(elements => {
     return elements
@@ -88,7 +88,7 @@ test('serializing main table', async({},testInfo) => {
   */
 test('Getting individual information', async({},testInfo) => {
   testInfo.setTimeout(0)
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < characters.length; i++) {
     const character = characters[i];
     await page.goto(character.link);
     const images = page.locator('#content aside img')
@@ -97,7 +97,8 @@ test('Getting individual information', async({},testInfo) => {
     const p = await locator_description.evaluateAll(ps=>ps.map(p=>p.textContent))
     character.img = images_evaluated[0]
     character.description = p[0]
-    character.appareance = p[1]  
+    character.appareance = p[1]
+    await new Promise(resolve=>setTimeout(resolve,4000))
   }
   console.log(characters.length)
 })
