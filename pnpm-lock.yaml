@@ -24,13 +24,13 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.0
         version: 1.19.0(hono@4.9.2)
+      '@playwright/test':
+        specifier: ^1.54.2
+        version: 1.54.2
       hono:
         specifier: ^4.9.2
         version: 4.9.2
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.54.2
-        version: 1.54.2
       '@types/node':
         specifier: ^20.11.17
         version: 20.19.11

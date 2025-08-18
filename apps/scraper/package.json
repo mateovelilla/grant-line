@@ -17,10 +17,10 @@
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "@hono/node-server": "^1.19.0",
-    "hono": "^4.9.2"
+    "hono": "^4.9.2",
+    "@playwright/test": "^1.54.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.2",
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"
