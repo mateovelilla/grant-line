@@ -30,6 +30,9 @@ importers:
       hono:
         specifier: ^4.9.2
         version: 4.9.2
+      playwright:
+        specifier: ^1.54.2
+        version: 1.54.2
     devDependencies:
       '@types/node':
         specifier: ^20.11.17

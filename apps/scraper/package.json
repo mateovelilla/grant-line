@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
@@ -17,8 +18,9 @@
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "@hono/node-server": "^1.19.0",
+    "@playwright/test": "^1.54.2",
     "hono": "^4.9.2",
-    "@playwright/test": "^1.54.2"
+    "playwright": "^1.54.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
