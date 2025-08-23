@@ -1,5 +1,5 @@
 {
-  "name": "scraper",
+  "name": "api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,18 +9,21 @@
     "build": "tsc",
     "start": "tsx src/index.ts",
     "lint": "biome lint ./src",
-    "format": "biome format --write ./src",
-    "test": "playwright test"
+    "format": "biome format --write ./src"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
-    "@hono/node-server": "^1.19.0",
-    "@playwright/test": "^1.54.2",
-    "hono": "^4.9.2",
-    "playwright": "^1.54.2"
+    "@apollo/server": "^5.0.0",
+    "@as-integrations/fastify": "^3.0.0",
+    "@graphql-tools/load-files": "^7.0.1",
+    "@graphql-tools/merge": "^9.1.1",
+    "fastify": "^5.5.0",
+    "graphql": "^16.11.0",
+    "graphql-tag": "^2.12.6",
+    "@grant-line/scraper": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
