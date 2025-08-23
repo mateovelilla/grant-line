@@ -1,9 +1,9 @@
 type User {
-  id: ID!
-  name: String!
+	id: ID!
+	name: String!
 }
 
 extend type Query {
-  user(id: ID!): User
-  users: [User!]!
+	user(id: ID!): User
+	users: [User!]!
 }

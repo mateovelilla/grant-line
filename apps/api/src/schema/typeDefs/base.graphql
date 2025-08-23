@@ -1,7 +1,7 @@
 type Query {
-  _empty: String
+	_empty: String
 }
 
 type Mutation {
-  _empty: String
+	_empty: String
 }

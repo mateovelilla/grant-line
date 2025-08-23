@@ -1,11 +1,6 @@
 import fs from "node:fs/promises";
-import path,{ dirname }  from "node:path"
 import { chromium } from "@playwright/test";
 import { type Browser, type Page } from "playwright"
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 import { existsSync } from "node:fs";
 export type ExpectedColumn = {
     label: string;
@@ -18,27 +13,26 @@ export type Character = {
     Note: string;
 }
 class BaseScraper {
-    LIMIT_CHARACTERS:number
+    CHARACTERS_LIMIT:number
     EXPECTED_COLUMNS!: ExpectedColumn[];
     BASE_URL: string;
     LIST_URL: string;
+    PATH_CHARACTERS: string;
     browser:Browser | undefined;
     page: Page | undefined;
     characters: Character[] | undefined;
     rows_raw: any[] | undefined;
-    constructor(){
-        this.LIMIT_CHARACTERS = 20
-        this.EXPECTED_COLUMNS = [
-            { label: "Name", index: 0, type: "link" },
-            { label: "Year", index: 0, type: null },
-            { label: "Note", index: 0, type: null },
-        ];
-        this.BASE_URL ="https://onepiece.fandom.com";
-        this.LIST_URL = this.BASE_URL + "/wiki/List_of_Canon_Characters";
+    
+    constructor({characters_limit = 10, expected_columns, base_url, list_url, path_characters}:{characters_limit: number, expected_columns: ExpectedColumn[], base_url: string, list_url: string, path_characters: string}){
+        this.CHARACTERS_LIMIT = characters_limit;
+        this.EXPECTED_COLUMNS = expected_columns;
+        this.BASE_URL = base_url;
+        this.LIST_URL = list_url;
+        this.PATH_CHARACTERS = path_characters;
     }
     async extractColumns() {
         let rows_raw: any[] = [];
-        const locator = this.page?.locator(`.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+${this.LIMIT_CHARACTERS})`);
+        const locator = this.page?.locator(`.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+${this.CHARACTERS_LIMIT})`);
         const header = this.page?.locator(".fandom-table:nth-of-type(1) thead th");
         const headers = await header?.evaluateAll((elements) => {
             return elements.map((header, index) => ({
@@ -110,7 +104,7 @@ class BaseScraper {
     }
     async buildJson(characters:any) {
         const data = JSON.stringify(characters, null, 2);
-        await fs.writeFile("characters.json", data, "utf8");
+        await fs.writeFile(this.PATH_CHARACTERS, data, "utf8");
     }
     async enqueue() {
         this.browser = await chromium.launch({  headless: true });
@@ -122,13 +116,12 @@ class BaseScraper {
         await this.browser.close()
         const refactoredCharacters = await this.getIndividualInformation(characters)
         await this.buildJson(refactoredCharacters)
-        console.log("Done!")
     }
     async init() {
         const response = {
             msg: "request enqueued, it could take a lot time!"
         }
-        if(existsSync(path.resolve(__dirname, 'characters.json'))) {
+        if(existsSync(this.PATH_CHARACTERS)) {
             response.msg = "the characters already exists!"
         }else {
             this.enqueue();

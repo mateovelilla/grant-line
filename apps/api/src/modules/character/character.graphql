@@ -1,7 +1,7 @@
 type Response {
-    msg: String!
+	msg: String!
 }
 
 extend type Mutation {
-    runScraper: Response
+	runScraper: Response
 }
