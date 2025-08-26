@@ -1,8 +1,9 @@
 import { buildServer } from "./server";
-
+import mongo from "@grant-line/database";
 async function start() {
+	process.env.MONGO_CONNECTION = ""
+	await mongo.connect();
 	const app = await buildServer();
-
 	app
 		.listen({ port: 4000, host: "0.0.0.0" })
 		.then(() => {

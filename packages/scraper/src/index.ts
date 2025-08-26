@@ -142,7 +142,7 @@ class BaseScraper {
 		if (existsSync(this.PATH_CHARACTERS)) {
 			response.msg = "the characters already exists!";
 		} else {
-			this.enqueue();
+			await this.enqueue();
 		}
 		return response;
 	}

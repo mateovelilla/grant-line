@@ -1,7 +1,9 @@
+import { readFile } from "node:fs/promises";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from "url";
 import { IResolvers } from "@graphql-tools/utils";
 import BaseScraper, { ExpectedColumn } from "@grant-line/scraper";
+import { insertCharacters } from "@grant-line/database";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,13 +19,27 @@ export const resolvers: IResolvers = {
 				{ label: "Note", index: 0, type: null },
 			];
 			const baseScraper = new BaseScraper({
-				characters_limit: 10,
+				characters_limit: 20,
 				expected_columns,
 				base_url,
 				list_url,
 				path_characters,
 			});
 			const response = await baseScraper.init();
+			// insert JSON in the Character collection
+			const data = await readFile(path_characters, "utf-8");
+			const json = JSON.parse(data);
+			const charactersMapped = json.map(({link, Name, Year, Note, img, description, appareance})=>({
+				name: Name,
+				link,
+				year:Year,
+				note: Note,
+				img,
+				description,
+				appareance
+			})) 
+    		await insertCharacters(charactersMapped)
+			console.log(json);
 			return response;
 		},
 	},
