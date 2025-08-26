@@ -1,7 +1,7 @@
 import { buildServer } from "./server";
 import mongo from "@grant-line/database";
 async function start() {
-	process.env.MONGO_CONNECTION = ""
+	process.env.MONGO_CONNECTION = "";
 	await mongo.connect();
 	const app = await buildServer();
 	app
