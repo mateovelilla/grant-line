@@ -1,17 +1,17 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 import CharacterModel from "./schemas/character.model";
 export type Character = {
-    name: String;
-    year: Number;
-    note: String;
-    img: String;
-    description: String;
-    appareance: String;
+	name: string;
+	year: number;
+	note: string;
+	img: string;
+	description: string;
+	appareance: string;
 };
-export function insertCharacters (characters: Character[]) {
-    return CharacterModel.insertMany(characters)
+export function insertCharacters(characters: Character[]) {
+	return CharacterModel.insertMany(characters);
 }
 export async function connect() {
-    await mongoose.connect(process.env.MONGO_CONNECTION)
-    console.log('Mongo database connected!')
+	await mongoose.connect(process.env.MONGO_CONNECTION);
+	console.log("Mongo database connected!");
 }
