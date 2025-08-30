@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { chromium } from "@playwright/test";
-import { type Browser, type Page } from "playwright";
+import type { Browser, Page, Locator } from "playwright";
 import { existsSync } from "node:fs";
 export type ExpectedColumn = {
 	label: string;
@@ -11,6 +11,7 @@ export type Character = {
 	Name: string;
 	Year: string;
 	Note: string;
+	link: string | undefined;
 };
 class BaseScraper {
 	CHARACTERS_LIMIT: number;
@@ -21,7 +22,6 @@ class BaseScraper {
 	browser: Browser | undefined;
 	page: Page | undefined;
 	characters: Character[] | undefined;
-	rows_raw: any[] | undefined;
 
 	constructor({
 		characters_limit = 10,
@@ -43,7 +43,7 @@ class BaseScraper {
 		this.PATH_CHARACTERS = path_characters;
 	}
 	async extractColumns() {
-		let rows_raw: any[] = [];
+		const rows_raw: Locator[] = [];
 		const locator = this.page?.locator(
 			`.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+${this.CHARACTERS_LIMIT})`,
 		);
@@ -66,11 +66,14 @@ class BaseScraper {
 		}
 		return rows_raw;
 	}
-	async serializeTable(characters: any[], expected_columns: any[]) {
+	async serializeTable(characters: Locator[], expected_columns: ExpectedColumn[]) {
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
 			const tds_locator = element.locator("td");
-			let character: {} | any = {};
+			const character: {
+				link?: string | undefined;
+			} | object = {};
+			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
 			const tds_refactored = await tds_locator.evaluateAll((tds: any[]) => {
 				return tds.map((td) => {
 					const column = { href: "", text: "" };
@@ -85,14 +88,14 @@ class BaseScraper {
 				const header = expected_columns[i];
 				character[header.label] ??= tds_refactored[header.index]?.text || "";
 				if (header.type === "link") {
-					character["link"] ??= tds_refactored[header.index].href;
+					character.link ??= tds_refactored[header.index].href;
 				}
 			}
 			characters[y] = character;
 		}
 		return characters;
 	}
-	async getIndividualInformation(characters: any[]) {
+	async getIndividualInformation(characters: Character[]) {
 		this.browser = await chromium.launch({ headless: true });
 		const context = await this.browser.newContext();
 		this.page = await context.newPage();
@@ -119,7 +122,7 @@ class BaseScraper {
 		await this.browser.close();
 		return characters;
 	}
-	async buildJson(characters: any) {
+	async buildJson(characters: Character[]) {
 		const data = JSON.stringify(characters, null, 2);
 		await fs.writeFile(this.PATH_CHARACTERS, data, "utf8");
 	}
