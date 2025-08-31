@@ -28,3 +28,45 @@ query ($id: ID!) {
 {
     "id": "68b44b455db14c2b6e5110d1"
 }
+
+###
+POST http://192.168.56.20:4000/graphql
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+query ($name: String!) {
+  characters(name: $name) {
+    _id
+    name
+    description
+    link
+    appareance
+    year
+  }
+}
+
+{
+    "name": "Akudai"
+}
+
+###
+POST http://192.168.56.20:4000/graphql
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+query ($year: Int!) {
+  characters(year: $year) {
+    _id
+    name
+    description
+    link
+    appareance
+    year
+  }
+}
+
+{
+    "year": 2018
+}

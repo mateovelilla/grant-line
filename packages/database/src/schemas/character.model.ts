@@ -13,4 +13,5 @@ const character = new Schema({
 	updateAt: { type: Date, default: Date.now },
 });
 const CharacterModel = new mongoose.model("character", character);
+
 export default CharacterModel;

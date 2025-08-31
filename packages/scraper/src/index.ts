@@ -66,13 +66,18 @@ class BaseScraper {
 		}
 		return rows_raw;
 	}
-	async serializeTable(characters: Locator[], expected_columns: ExpectedColumn[]) {
+	async serializeTable(
+		characters: Locator[],
+		expected_columns: ExpectedColumn[],
+	) {
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
 			const tds_locator = element.locator("td");
-			const character: {
-				link?: string | undefined;
-			} | object = {};
+			const character:
+				| {
+						link?: string | undefined;
+				  }
+				| object = {};
 			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
 			const tds_refactored = await tds_locator.evaluateAll((tds: any[]) => {
 				return tds.map((td) => {

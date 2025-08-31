@@ -3,7 +3,12 @@ import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { IResolvers } from "@graphql-tools/utils";
 import BaseScraper, { type ExpectedColumn } from "@grant-line/scraper";
-import { insertCharacters, findCharacterById } from "@grant-line/database";
+import {
+	type Character,
+	insertCharacters,
+	findCharacterById,
+	findCharacters,
+} from "@grant-line/database";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -41,11 +46,27 @@ export const resolvers: IResolvers = {
 			);
 			await insertCharacters(charactersMapped);
 			return response;
-		}
+		},
 	},
 	Query: {
 		character: async (_parent, args: { id: string }) => {
-			return await findCharacterById(args.id)
+			return await findCharacterById(args.id);
 		},
-	}
+		characters: async (
+			_parent,
+			args: { name: string; year: number; appareance: string },
+		) => {
+			const query: Character = {};
+			if (args.name) {
+				query.name = { $regex: args.name, $options: "i" };
+			}
+			if (args.year) {
+				query.year = args.year;
+			}
+			if (args.appareance) {
+				query.appareance = { $regex: args.appareance, $options: "i" };
+			}
+			return await findCharacters(query);
+		},
+	},
 };
