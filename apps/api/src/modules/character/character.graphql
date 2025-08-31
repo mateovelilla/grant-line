@@ -1,7 +1,21 @@
 type Response {
 	msg: String!
 }
-
+type Character {
+	_id: ID!
+	name: String
+	link: String
+	year: Int
+	note: String
+	img: String
+	description: String
+	appareance: String
+}
 extend type Mutation {
 	runScraper: Response
+}
+
+extend type Query {
+	character(id: ID!): Character
+	characters: [Character!]!
 }

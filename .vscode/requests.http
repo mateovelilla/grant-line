@@ -3,25 +3,28 @@ Content-Type: application/json
 Authorization: Bearer xxx
 X-REQUEST-TYPE: GraphQL
 
-query ($id: ID!) {
-  user(id: $id) {
-    name
-    id
+mutation {
+  runScraper {
+    msg
   }
 }
-
-{
-    "id": "1"
-}
 ###
-
 POST http://192.168.56.20:4000/graphql
 Content-Type: application/json
 Authorization: Bearer xxx
 X-REQUEST-TYPE: GraphQL
 
-mutation {
-  runScraper {
-    msg
+query ($id: ID!) {
+  character(id: $id) {
+    _id
+    name
+    description
+    link
+    appareance
+    year
   }
+}
+
+{
+    "id": "68b44b455db14c2b6e5110d1"
 }

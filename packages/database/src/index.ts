@@ -11,6 +11,9 @@ export type Character = {
 export function insertCharacters(characters: Character[]) {
 	return CharacterModel.insertMany(characters);
 }
+export function findCharacterById(id: string) {
+	return CharacterModel.findOne({_id: id})
+}
 export async function connect() {
 	await mongoose.connect(process.env.MONGO_CONNECTION);
 	console.log("Mongo database connected!");

@@ -3,7 +3,7 @@ import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { IResolvers } from "@graphql-tools/utils";
 import BaseScraper, { type ExpectedColumn } from "@grant-line/scraper";
-import { insertCharacters } from "@grant-line/database";
+import { insertCharacters, findCharacterById } from "@grant-line/database";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,7 +26,6 @@ export const resolvers: IResolvers = {
 				path_characters,
 			});
 			const response = await baseScraper.init();
-			// insert JSON in the Character collection
 			const data = await readFile(path_characters, "utf-8");
 			const json = JSON.parse(data);
 			const charactersMapped = json.map(
@@ -41,8 +40,12 @@ export const resolvers: IResolvers = {
 				}),
 			);
 			await insertCharacters(charactersMapped);
-			console.log(json);
 			return response;
-		},
+		}
 	},
+	Query: {
+		character: async (_parent, args: { id: string }) => {
+			return await findCharacterById(args.id)
+		},
+	}
 };
