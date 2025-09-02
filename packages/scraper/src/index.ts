@@ -4,7 +4,7 @@ import type { Browser, Page, Locator } from "playwright";
 import { existsSync } from "node:fs";
 export type ExpectedColumn = {
 	label: string;
-	index: number | undefined;
+	index: number;
 	type: string | null;
 };
 export type Character = {
@@ -12,7 +12,11 @@ export type Character = {
 	Year: string;
 	Note: string;
 	link: string | undefined;
+	img: string;
+	description: string;
+	appareance: string;
 };
+export type ImageHtml =  { src: string };
 class BaseScraper {
 	CHARACTERS_LIMIT: number;
 	EXPECTED_COLUMNS!: ExpectedColumn[];
@@ -56,7 +60,7 @@ class BaseScraper {
 		});
 		this.EXPECTED_COLUMNS = this.EXPECTED_COLUMNS.map(({ label, type }) => ({
 			label,
-			index: headers?.find((col) => col.label === label)?.index,
+			index: headers?.find((col) => col.label === label)?.index || 0,
 			type,
 		}));
 		if (locator) {
@@ -70,14 +74,12 @@ class BaseScraper {
 		characters: Locator[],
 		expected_columns: ExpectedColumn[],
 	) {
+		const results: { [key: string]: any } [] = []
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
 			const tds_locator = element.locator("td");
-			const character:
-				| {
-						link?: string | undefined;
-				  }
-				| object = {};
+			const character: { [key: string]: any }  = {};
+			
 			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
 			const tds_refactored = await tds_locator.evaluateAll((tds: any[]) => {
 				return tds.map((td) => {
@@ -96,9 +98,9 @@ class BaseScraper {
 					character.link ??= tds_refactored[header.index].href;
 				}
 			}
-			characters[y] = character;
+			results[y] = character;
 		}
-		return characters;
+		return results;
 	}
 	async getIndividualInformation(characters: Character[]) {
 		this.browser = await chromium.launch({ headless: true });
@@ -107,19 +109,19 @@ class BaseScraper {
 		for (let i = 0; i < characters.length; i++) {
 			console.log("Getting individual information...");
 			const character = characters[i];
-			await this.page?.goto(character.link, {
+			await this.page?.goto(character.link || '', {
 				waitUntil: "domcontentloaded",
 				timeout: 0,
 			});
 			const images = this.page?.locator("#content aside img");
 			const images_evaluated = await images?.evaluateAll((imgs) =>
-				imgs.map((img) => img.src),
+				imgs.map((img) => img),
 			);
 			const locator_description = this.page?.locator("#content p");
 			const p = await locator_description?.evaluateAll((ps) =>
 				ps.map((p) => p.textContent),
 			);
-			character.img = images_evaluated ? images_evaluated[0] : "";
+			character.img = images_evaluated ? images_evaluated[0].src : "";
 			character.description = p ? p[0] : "";
 			character.appareance = p ? p[1] : "";
 			characters[i] = character;
