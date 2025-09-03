@@ -27,6 +27,7 @@ export function findCharacterById(id: string) {
 export function findCharacters(character: FilterCharacters) {
 	return CharacterModel.find(character);
 }
-export default function connect() {
+export function connect() {
 	return mongoose.connect(process.env.MONGO_CONNECTION || '');
 }
+export default connect

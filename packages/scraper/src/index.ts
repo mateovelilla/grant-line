@@ -77,11 +77,11 @@ class BaseScraper {
 		const results: { [key: string]: any } [] = []
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
-			const tds_locator = element.locator("td");
+			const tds_locator = element?.locator("td");
 			const character: { [key: string]: any }  = {};
 			
 			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
-			const tds_refactored = await tds_locator.evaluateAll((tds: any[]) => {
+			const tds_refactored = await tds_locator?.evaluateAll((tds: any[]) => {
 				return tds.map((td) => {
 					const column = { href: "", text: "" };
 					if (Object.keys(td.childNodes).length > 1) {
