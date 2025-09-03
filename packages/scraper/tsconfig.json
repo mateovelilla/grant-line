@@ -1,16 +1,9 @@
 {
+  "extends": "../../tsconfig.json",
+  "include": ["src"],
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "outDir": "./dist"
+    "outDir": "dist",
+    "composite": true,
+    "rootDir": "src"
   },
-  "exclude": ["node_modules"]
 }

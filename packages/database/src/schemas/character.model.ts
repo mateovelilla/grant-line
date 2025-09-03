@@ -1,7 +1,17 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import { Schema, model, Document } from 'mongoose';
+export interface ICharacter extends Document {
+	name: string;
+	link: string;
+	year: number;
+	note: string;
+	img: string;
+	description: string;
+	appareance: string;
+	createdAt: Date;
+	updateAt: Date;
+}
 
-const character = new Schema({
+const character = new Schema<ICharacter>({
 	name: String,
 	link: String,
 	year: Number,
@@ -12,6 +22,6 @@ const character = new Schema({
 	createdAt: { type: Date, default: Date.now },
 	updateAt: { type: Date, default: Date.now },
 });
-const CharacterModel = new mongoose.model("character", character);
+const CharacterModel = model<ICharacter>("character", character);
 
 export default CharacterModel;

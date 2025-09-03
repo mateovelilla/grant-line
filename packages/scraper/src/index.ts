@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 import type { Browser, Page, Locator } from "playwright";
 import { existsSync } from "node:fs";
@@ -102,10 +102,11 @@ class BaseScraper {
 		}
 		return results;
 	}
-	async getIndividualInformation(characters: Character[]) {
+	async getIndividualInformation(characters: { [key: string]: any } []) {
 		this.browser = await chromium.launch({ headless: true });
 		const context = await this.browser.newContext();
 		this.page = await context.newPage();
+		const charactersDetailed: Character[] = []
 		for (let i = 0; i < characters.length; i++) {
 			console.log("Getting individual information...");
 			const character = characters[i];
@@ -115,7 +116,7 @@ class BaseScraper {
 			});
 			const images = this.page?.locator("#content aside img");
 			const images_evaluated = await images?.evaluateAll((imgs) =>
-				imgs.map((img) => img),
+				imgs.map((img) => img as HTMLImageElement),
 			);
 			const locator_description = this.page?.locator("#content p");
 			const p = await locator_description?.evaluateAll((ps) =>
@@ -124,14 +125,14 @@ class BaseScraper {
 			character.img = images_evaluated ? images_evaluated[0].src : "";
 			character.description = p ? p[0] : "";
 			character.appareance = p ? p[1] : "";
-			characters[i] = character;
+			charactersDetailed[i] = character as Character;
 		}
 		await this.browser.close();
-		return characters;
+		return charactersDetailed;
 	}
 	async buildJson(characters: Character[]) {
 		const data = JSON.stringify(characters, null, 2);
-		await fs.writeFile(this.PATH_CHARACTERS, data, "utf8");
+		await writeFile(this.PATH_CHARACTERS, data, "utf8");
 	}
 	async enqueue() {
 		this.browser = await chromium.launch({ headless: true });

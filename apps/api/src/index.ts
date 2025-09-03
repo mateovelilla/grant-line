@@ -1,9 +1,10 @@
-import { buildServer } from "./server";
-import mongo from "@grant-line/database";
+import { buildServer } from "./server.js";
+import connect from "@grant-line/database";
 async function start() {
 	process.env.MONGO_CONNECTION =
 		"mongodb://admin:secret@0.0.0.0:27017/grant-line?authSource=admin";
-	await mongo.connect();
+	await connect();
+	console.log("Mongo database connected!");
 	const app = await buildServer();
 	app
 		.listen({ port: 4000, host: "0.0.0.0" })

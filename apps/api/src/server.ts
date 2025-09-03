@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import { ApolloServer } from "@apollo/server";
 import fastifyApollo from "@as-integrations/fastify";
-import { typeDefs, resolvers } from "./schema";
+import { typeDefs, resolvers } from "./schema/index.js";
 
 export async function buildServer() {
 	const fastify = Fastify();

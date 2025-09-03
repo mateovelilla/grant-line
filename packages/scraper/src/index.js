@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 import { existsSync } from "node:fs";
 class BaseScraper {
@@ -29,7 +29,7 @@ class BaseScraper {
         });
         this.EXPECTED_COLUMNS = this.EXPECTED_COLUMNS.map(({ label, type }) => ({
             label,
-            index: headers?.find((col) => col.label === label)?.index,
+            index: headers?.find((col) => col.label === label)?.index || 0,
             type,
         }));
         if (locator) {
@@ -40,6 +40,7 @@ class BaseScraper {
         return rows_raw;
     }
     async serializeTable(characters, expected_columns) {
+        const results = [];
         for (let y = 0; y < characters.length; y++) {
             const element = characters[y];
             const tds_locator = element.locator("td");
@@ -62,36 +63,37 @@ class BaseScraper {
                     character.link ??= tds_refactored[header.index].href;
                 }
             }
-            characters[y] = character;
+            results[y] = character;
         }
-        return characters;
+        return results;
     }
     async getIndividualInformation(characters) {
         this.browser = await chromium.launch({ headless: true });
         const context = await this.browser.newContext();
         this.page = await context.newPage();
+        const charactersDetailed = [];
         for (let i = 0; i < characters.length; i++) {
             console.log("Getting individual information...");
             const character = characters[i];
-            await this.page?.goto(character.link, {
+            await this.page?.goto(character.link || '', {
                 waitUntil: "domcontentloaded",
                 timeout: 0,
             });
             const images = this.page?.locator("#content aside img");
-            const images_evaluated = await images?.evaluateAll((imgs) => imgs.map((img) => img.src));
+            const images_evaluated = await images?.evaluateAll((imgs) => imgs.map((img) => img));
             const locator_description = this.page?.locator("#content p");
             const p = await locator_description?.evaluateAll((ps) => ps.map((p) => p.textContent));
-            character.img = images_evaluated ? images_evaluated[0] : "";
+            character.img = images_evaluated ? images_evaluated[0].src : "";
             character.description = p ? p[0] : "";
             character.appareance = p ? p[1] : "";
-            characters[i] = character;
+            charactersDetailed[i] = character;
         }
         await this.browser.close();
-        return characters;
+        return charactersDetailed;
     }
     async buildJson(characters) {
         const data = JSON.stringify(characters, null, 2);
-        await fs.writeFile(this.PATH_CHARACTERS, data, "utf8");
+        await writeFile(this.PATH_CHARACTERS, data, "utf8");
     }
     async enqueue() {
         this.browser = await chromium.launch({ headless: true });
