@@ -1,7 +1,12 @@
-import { writeFile } from "node:fs/promises";
-import { chromium } from "@playwright/test";
+// import { writeFile } from "node:fs/promises";
+// import { chromium } from "@playwright/test";
+// import type { Browser, Page, Locator } from "playwright";
+// import { existsSync } from "node:fs";
+
 import type { Browser, Page, Locator } from "playwright";
-import { existsSync } from "node:fs";
+const { writeFile } = require("node:fs/promises");
+const { chromium } = require("@playwright/test");
+const { existsSync } = require("node:fs");
 export type ExpectedColumn = {
 	label: string;
 	index: number;
@@ -92,10 +97,10 @@ class BaseScraper {
 				});
 			});
 			for (let i = 0; i < expected_columns.length; i++) {
-				const header = expected_columns[i];
-				character[header.label] ??= tds_refactored[header.index]?.text || "";
+				const header = expected_columns[i] || { label: "", index: 0, type: null};
+				character[header.label] ??= tds_refactored ? tds_refactored[header.index]?.text : "";
 				if (header.type === "link") {
-					character.link ??= tds_refactored[header.index].href;
+					character.link ??= tds_refactored ? tds_refactored[header.index]?.href : "";
 				}
 			}
 			results[y] = character;
@@ -104,13 +109,13 @@ class BaseScraper {
 	}
 	async getIndividualInformation(characters: { [key: string]: any } []) {
 		this.browser = await chromium.launch({ headless: true });
-		const context = await this.browser.newContext();
-		this.page = await context.newPage();
+		const context = await this.browser?.newContext();
+		this.page = await context?.newPage();
 		const charactersDetailed: Character[] = []
 		for (let i = 0; i < characters.length; i++) {
 			console.log("Getting individual information...");
 			const character = characters[i];
-			await this.page?.goto(character.link || '', {
+			await this.page?.goto(character?.link || '', {
 				waitUntil: "domcontentloaded",
 				timeout: 0,
 			});
@@ -122,12 +127,14 @@ class BaseScraper {
 			const p = await locator_description?.evaluateAll((ps) =>
 				ps.map((p) => p.textContent),
 			);
-			character.img = images_evaluated ? images_evaluated[0].src : "";
-			character.description = p ? p[0] : "";
-			character.appareance = p ? p[1] : "";
+			if(character) {
+				character.img = images_evaluated ? images_evaluated[0]?.src : "";
+				character.description = p ? p[0] : "";
+				character.appareance = p ? p[1] : "";
+			}
 			charactersDetailed[i] = character as Character;
 		}
-		await this.browser.close();
+		await this.browser?.close();
 		return charactersDetailed;
 	}
 	async buildJson(characters: Character[]) {
@@ -136,12 +143,12 @@ class BaseScraper {
 	}
 	async enqueue() {
 		this.browser = await chromium.launch({ headless: true });
-		const context = await this.browser.newContext();
-		this.page = await context.newPage();
-		await this.page.goto(this.LIST_URL, { timeout: 0 });
+		const context = await this.browser?.newContext();
+		this.page = await context?.newPage();
+		await this.page?.goto(this.LIST_URL, { timeout: 0 });
 		const rows = await this.extractColumns();
 		const characters = await this.serializeTable(rows, this.EXPECTED_COLUMNS);
-		await this.browser.close();
+		await this.browser?.close();
 		const refactoredCharacters =
 			await this.getIndividualInformation(characters);
 		await this.buildJson(refactoredCharacters);
@@ -158,4 +165,4 @@ class BaseScraper {
 		return response;
 	}
 }
-export default BaseScraper;
+module.exports = BaseScraper;

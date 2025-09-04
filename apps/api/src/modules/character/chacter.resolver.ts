@@ -1,21 +1,34 @@
-import { readFile } from "node:fs/promises";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import type { IResolvers } from "@graphql-tools/utils";
-import BaseScraper, { type ExpectedColumn } from "@grant-line/scraper";
-import {
-	type FilterCharacters,
+// import { readFile } from "node:fs/promises";
+// import path, { dirname } from "node:path";
+// import { fileURLToPath } from "node:url";
+// import type { IResolvers } from "@graphql-tools/utils";
+// import BaseScraper, { type ExpectedColumn } from "@grant-line/scraper";
+// import {
+//	type FilterCharacters,
+//	insertCharacters,
+//	findCharacterById,
+//	findCharacters
+// } from "@grant-line/database";
+
+
+const { readFile } = require("node:fs/promises");
+const  path = require("node:path");
+//const  { fileURLToPath } = require("node:url");
+const  BaseScraper = require("@grant-line/scraper");
+import type { ExpectedColumn } from "@grant-line/scraper";
+import type { FilterCharacters } from "@grant-line/database";
+const {
 	insertCharacters,
 	findCharacterById,
 	findCharacters
-} from "@grant-line/database";
+} = require("@grant-line/database");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-export const resolvers: IResolvers = {
+exports.resolvers = {
 	Mutation: {
-		runScraper: async (_parent) => {
+		runScraper: async () => {
 			const base_url = "https://onepiece.fandom.com";
 			const list_url = `${base_url}/wiki/List_of_Canon_Characters`;
 			const path_characters = path.resolve(__dirname, "characters.json");
@@ -50,11 +63,11 @@ export const resolvers: IResolvers = {
 		},
 	},
 	Query: {
-		character: async (_parent, args: { id: string }) => {
+		character: async (_parent: unknown, args: { id: string }) => {
 			return await findCharacterById(args.id);
 		},
 		characters: async (
-			_parent,
+			_parent:unknown,
 			args: { name: string; year: number; appareance: string },
 		) => {
 			const query: FilterCharacters = {} as FilterCharacters;

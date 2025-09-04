@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "private": true,
   "scripts": {
     "lint": "biome lint ./src",
@@ -11,7 +10,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-      "mongoose": "^8.18.0"
+    "mongoose": "^8.18.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

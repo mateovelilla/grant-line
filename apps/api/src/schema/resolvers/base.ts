@@ -1,6 +1,5 @@
-import type { IResolvers } from "@graphql-tools/utils";
-
-export const resolvers: IResolvers = {
+// import type { IResolvers } from "@graphql-tools/utils";
+exports.resolvers = {
 	Query: {
 		_empty: () => "API is running 🚀",
 	},

@@ -1,5 +1,8 @@
-import mongoose from "mongoose";
-import CharacterModel from "./schemas/character.model.js";
+const mongoose = require("mongoose")
+const CharacterModel = require("./schemas/character.model");
+
+// import mongoose from "mongoose";
+// import CharacterModel from "./schemas/character.model";
 export type Character = {
 	name?: string;
 	year?: number;
@@ -18,16 +21,15 @@ export type FilterCharacters = {
 	appareance: QueryType;
 }
 
-export function insertCharacters(characters: Character[]) {
+exports.insertCharacters =  function(characters: Character[]) {
 	return CharacterModel.insertMany(characters);
 }
-export function findCharacterById(id: string) {
+exports.findCharacterById = function(id: string) {
 	return CharacterModel.findById(id);
 }
-export function findCharacters(character: FilterCharacters) {
+exports.findCharacters = function (character: FilterCharacters) {
 	return CharacterModel.find(character);
 }
-export function connect() {
+exports.connect =  function() {
 	return mongoose.connect(process.env.MONGO_CONNECTION || '');
 }
-export default connect

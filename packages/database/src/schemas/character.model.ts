@@ -1,4 +1,6 @@
-import { Schema, model, Document } from 'mongoose';
+const { model, Schema } = require("mongoose");
+const Document = require("mongoose").Document;
+
 export interface ICharacter extends Document {
 	name: string;
 	link: string;
@@ -11,17 +13,7 @@ export interface ICharacter extends Document {
 	updateAt: Date;
 }
 
-const character = new Schema<ICharacter>({
-	name: String,
-	link: String,
-	year: Number,
-	note: String,
-	img: String,
-	description: String,
-	appareance: String,
-	createdAt: { type: Date, default: Date.now },
-	updateAt: { type: Date, default: Date.now },
-});
-const CharacterModel = model<ICharacter>("character", character);
+const character = new Schema();
+const CharacterModel = model("character", character);
 
-export default CharacterModel;
+module.exports = CharacterModel;
