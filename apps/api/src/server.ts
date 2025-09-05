@@ -1,15 +1,14 @@
 const Fastify = require("fastify");
 const { ApolloServer } = require("@apollo/server")
-const fastifyApollo = require("@as-integrations/fastify")
+const fastifyApollo = require("@as-integrations/fastify").default
 const { typeDefs, resolvers } = require("./schema")
-// import Fastify from "fastify";
-// import { ApolloServer } from "@apollo/server";
-// import fastifyApollo from "@as-integrations/fastify";
-// import { typeDefs, resolvers } from "./schema/index.js";
 
 exports.buildServer = async () => {
 	const fastify = Fastify();
-
+	console.log(
+		typeDefs,
+		resolvers
+	)
 	const apollo = new ApolloServer({
 		typeDefs,
 		resolvers,

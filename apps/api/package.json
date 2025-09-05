@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc -b",
+    "build": "tsc -b && tsx src/utils/copy-graphql-files.ts",
     "start:typescript": "tsx src/index.ts",
     "start": "node ./dist/index.js",
     "lint": "biome lint ./src",
@@ -25,12 +25,12 @@
     "@graphql-tools/load-files": "^7.0.1",
     "@graphql-tools/merge": "^9.1.1",
     "@graphql-tools/utils": "^10.9.1",
-    "@types/node": "^20.11.17",
     "fastify": "^5.5.0",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
+    "@graphql-codegen/typescript-graphql-files-modules": "^3.0.1",
     "@types/node": "^20.11.17",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",

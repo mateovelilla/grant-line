@@ -26,7 +26,7 @@ const {
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-exports.resolvers = {
+const resolvers = {
 	Mutation: {
 		runScraper: async () => {
 			const base_url = "https://onepiece.fandom.com";
@@ -84,3 +84,4 @@ exports.resolvers = {
 		},
 	},
 };
+module.exports = { resolvers };

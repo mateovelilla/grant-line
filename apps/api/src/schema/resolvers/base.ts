@@ -1,5 +1,4 @@
-// import type { IResolvers } from "@graphql-tools/utils";
-exports.resolvers = {
+const resolvers = {
 	Query: {
 		_empty: () => "API is running 🚀",
 	},
@@ -7,3 +6,4 @@ exports.resolvers = {
 		_empty: () => "API is running 🚀",
 	},
 };
+module.exports = { resolvers }
