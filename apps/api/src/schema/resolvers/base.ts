@@ -6,4 +6,4 @@ const resolvers = {
 		_empty: () => "API is running 🚀",
 	},
 };
-module.exports = { resolvers }
+module.exports = { resolvers };

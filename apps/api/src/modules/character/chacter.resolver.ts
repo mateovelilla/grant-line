@@ -10,17 +10,16 @@
 //	findCharacters
 // } from "@grant-line/database";
 
-
 const { readFile } = require("node:fs/promises");
-const  path = require("node:path");
+const path = require("node:path");
 //const  { fileURLToPath } = require("node:url");
-const  BaseScraper = require("@grant-line/scraper");
+const BaseScraper = require("@grant-line/scraper");
 import type { ExpectedColumn } from "@grant-line/scraper";
 import type { FilterCharacters } from "@grant-line/database";
 const {
 	insertCharacters,
 	findCharacterById,
-	findCharacters
+	findCharacters,
 } = require("@grant-line/database");
 
 // const __filename = fileURLToPath(import.meta.url);
@@ -48,7 +47,23 @@ const resolvers = {
 			const data = await readFile(path_characters, "utf-8");
 			const json = JSON.parse(data);
 			const charactersMapped = json.map(
-				({ link, Name, Year, Note, img, description, appareance }: {link: string, Name: string, Year: string, Note: string, img: string, description: string, appareance: string}) => ({
+				({
+					link,
+					Name,
+					Year,
+					Note,
+					img,
+					description,
+					appareance,
+				}: {
+					link: string;
+					Name: string;
+					Year: string;
+					Note: string;
+					img: string;
+					description: string;
+					appareance: string;
+				}) => ({
 					name: Name,
 					link,
 					year: Year,
@@ -67,7 +82,7 @@ const resolvers = {
 			return await findCharacterById(args.id);
 		},
 		characters: async (
-			_parent:unknown,
+			_parent: unknown,
 			args: { name: string; year: number; appareance: string },
 		) => {
 			const query: FilterCharacters = {} as FilterCharacters;

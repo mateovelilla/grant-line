@@ -1,5 +1,5 @@
-const { buildServer } = require ("./server");
-const { connect } = require("@grant-line/database")
+const { buildServer } = require("./server");
+const { connect } = require("@grant-line/database");
 async function start() {
 	process.env.MONGO_CONNECTION =
 		"mongodb://admin:secret@0.0.0.0:27017/grant-line?authSource=admin";
