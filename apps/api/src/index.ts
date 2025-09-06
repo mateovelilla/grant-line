@@ -4,7 +4,7 @@ async function start() {
 	process.env.MONGO_CONNECTION =
 		"mongodb://admin:secret@0.0.0.0:27017/grant-line?authSource=admin";
 	await connect();
-	console.log("Mongo database connected!");
+	console.log("🍀 Mongo database connected!");
 	const app = await buildServer();
 	app
 		.listen({ port: 4000, host: "0.0.0.0" })

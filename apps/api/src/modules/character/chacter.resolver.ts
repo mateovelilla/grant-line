@@ -1,18 +1,5 @@
-// import { readFile } from "node:fs/promises";
-// import path, { dirname } from "node:path";
-// import { fileURLToPath } from "node:url";
-// import type { IResolvers } from "@graphql-tools/utils";
-// import BaseScraper, { type ExpectedColumn } from "@grant-line/scraper";
-// import {
-//	type FilterCharacters,
-//	insertCharacters,
-//	findCharacterById,
-//	findCharacters
-// } from "@grant-line/database";
-
-const { readFile } = require("node:fs/promises");
 const path = require("node:path");
-//const  { fileURLToPath } = require("node:url");
+const { readFile } = require("node:fs/promises");
 const BaseScraper = require("@grant-line/scraper");
 import type { ExpectedColumn } from "@grant-line/scraper";
 import type { FilterCharacters } from "@grant-line/database";
@@ -21,9 +8,6 @@ const {
 	findCharacterById,
 	findCharacters,
 } = require("@grant-line/database");
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const resolvers = {
 	Mutation: {
@@ -37,7 +21,7 @@ const resolvers = {
 				{ label: "Note", index: 0, type: null },
 			];
 			const baseScraper = new BaseScraper({
-				characters_limit: 20,
+				characters_limit: 5,
 				expected_columns,
 				base_url,
 				list_url,

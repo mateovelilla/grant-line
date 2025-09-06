@@ -1,6 +1,6 @@
+const path = require("node:path");
 const { loadFilesSync } = require("@graphql-tools/load-files");
 const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
-const path = require("node:path");
 
 const typesArray = loadFilesSync([
 	path.join(__dirname, "./typeDefs"),

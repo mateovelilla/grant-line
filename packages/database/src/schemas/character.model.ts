@@ -1,19 +1,16 @@
 const { model, Schema } = require("mongoose");
-const Document = require("mongoose").Document;
 
-export interface ICharacter extends Document {
-	name: string;
-	link: string;
-	year: number;
-	note: string;
-	img: string;
-	description: string;
-	appareance: string;
-	createdAt: Date;
-	updateAt: Date;
-}
-
-const character = new Schema();
+const character = new Schema({
+	name: String,
+    link: String,
+    year: Number,
+    note: String,
+    img: String,
+    description: String,
+    appareance: String,
+    createdAt: { type: Date, default: Date.now },
+    updateAt: { type: Date, default: Date.now },
+});
 const CharacterModel = model("character", character);
 
 module.exports = CharacterModel;

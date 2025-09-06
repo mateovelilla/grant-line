@@ -21,7 +21,7 @@ export type Character = {
 	description: string;
 	appareance: string;
 };
-export type ImageHtml =  { src: string };
+export type ImageHtml = { src: string };
 class BaseScraper {
 	CHARACTERS_LIMIT: number;
 	EXPECTED_COLUMNS!: ExpectedColumn[];
@@ -79,12 +79,12 @@ class BaseScraper {
 		characters: Locator[],
 		expected_columns: ExpectedColumn[],
 	) {
-		const results: { [key: string]: any } [] = []
+		const results: { [key: string]: any }[] = [];
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
 			const tds_locator = element?.locator("td");
-			const character: { [key: string]: any }  = {};
-			
+			const character: { [key: string]: any } = {};
+
 			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
 			const tds_refactored = await tds_locator?.evaluateAll((tds: any[]) => {
 				return tds.map((td) => {
@@ -97,38 +97,48 @@ class BaseScraper {
 				});
 			});
 			for (let i = 0; i < expected_columns.length; i++) {
-				const header = expected_columns[i] || { label: "", index: 0, type: null};
-				character[header.label] ??= tds_refactored ? tds_refactored[header.index]?.text : "";
+				const header = expected_columns[i] || {
+					label: "",
+					index: 0,
+					type: null,
+				};
+				character[header.label] ??= tds_refactored
+					? tds_refactored[header.index]?.text
+					: "";
 				if (header.type === "link") {
-					character.link ??= tds_refactored ? tds_refactored[header.index]?.href : "";
+					character.link ??= tds_refactored
+						? tds_refactored[header.index]?.href
+						: "";
 				}
 			}
 			results[y] = character;
 		}
 		return results;
 	}
-	async getIndividualInformation(characters: { [key: string]: any } []) {
+	async getIndividualInformation(characters: { [key: string]: any }[]) {
 		this.browser = await chromium.launch({ headless: true });
 		const context = await this.browser?.newContext();
 		this.page = await context?.newPage();
-		const charactersDetailed: Character[] = []
+		const charactersDetailed: Character[] = [];
 		for (let i = 0; i < characters.length; i++) {
 			console.log("Getting individual information...");
 			const character = characters[i];
-			await this.page?.goto(character?.link || '', {
+			await this.page?.goto(character?.link || "", {
 				waitUntil: "domcontentloaded",
 				timeout: 0,
 			});
 			const images = this.page?.locator("#content aside img");
+			// @ts-ignore
 			const images_evaluated = await images?.evaluateAll((imgs) =>
-				imgs.map((img) => img as HTMLImageElement),
+				imgs.map((img) => img.src),
 			);
 			const locator_description = this.page?.locator("#content p");
 			const p = await locator_description?.evaluateAll((ps) =>
 				ps.map((p) => p.textContent),
 			);
-			if(character) {
-				character.img = images_evaluated ? images_evaluated[0]?.src : "";
+			if (character) {
+				character.img =
+					images_evaluated && images_evaluated[0] ? images_evaluated[0] : " ";
 				character.description = p ? p[0] : "";
 				character.appareance = p ? p[1] : "";
 			}

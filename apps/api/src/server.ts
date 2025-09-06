@@ -5,7 +5,6 @@ const { typeDefs, resolvers } = require("./schema");
 
 exports.buildServer = async () => {
 	const fastify = Fastify();
-	console.log(typeDefs, resolvers);
 	const apollo = new ApolloServer({
 		typeDefs,
 		resolvers,
