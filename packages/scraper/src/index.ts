@@ -1,8 +1,3 @@
-// import { writeFile } from "node:fs/promises";
-// import { chromium } from "@playwright/test";
-// import type { Browser, Page, Locator } from "playwright";
-// import { existsSync } from "node:fs";
-
 import type { Browser, Page, Locator } from "playwright";
 const { writeFile } = require("node:fs/promises");
 const { chromium } = require("@playwright/test");

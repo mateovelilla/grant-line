@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 const CharacterModel = require("./schemas/character.model");
-
-// import mongoose from "mongoose";
-// import CharacterModel from "./schemas/character.model";
 export type Character = {
 	name?: string;
 	year?: number;
