@@ -18,8 +18,8 @@ export type Character = {
 	Note: string;
 	link: string | undefined;
 	img: string;
-	description: string;
-	appareance: string;
+	description: string | undefined;
+	appareance: string | undefined;
 };
 export type ImageHtml = { src: string };
 class BaseScraper {
@@ -79,11 +79,12 @@ class BaseScraper {
 		characters: Locator[],
 		expected_columns: ExpectedColumn[],
 	) {
-		const results: { [key: string]: any }[] = [];
+		const results: Character[] = [];
 		for (let y = 0; y < characters.length; y++) {
 			const element = characters[y];
 			const tds_locator = element?.locator("td");
-			const character: { [key: string]: any } = {};
+			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
+			const character: Character | any = {};
 
 			// biome-ignore lint/suspicious/noExplicitAny: This is a temporary workaround for untyped data.
 			const tds_refactored = await tds_locator?.evaluateAll((tds: any[]) => {
@@ -115,7 +116,7 @@ class BaseScraper {
 		}
 		return results;
 	}
-	async getIndividualInformation(characters: { [key: string]: any }[]) {
+	async getIndividualInformation(characters: Character[]) {
 		this.browser = await chromium.launch({ headless: true });
 		const context = await this.browser?.newContext();
 		this.page = await context?.newPage();
@@ -129,7 +130,8 @@ class BaseScraper {
 			});
 			const images = this.page?.locator("#content aside img");
 			// @ts-ignore
-			const images_evaluated = await images?.evaluateAll((imgs) =>
+			const images_evaluated = await images.evaluateAll((imgs) =>
+				// @ts-ignore
 				imgs.map((img) => img.src),
 			);
 			const locator_description = this.page?.locator("#content p");
@@ -137,8 +139,7 @@ class BaseScraper {
 				ps.map((p) => p.textContent),
 			);
 			if (character) {
-				character.img =
-					images_evaluated && images_evaluated[0] ? images_evaluated[0] : " ";
+				character.img = images_evaluated[0] ?? " ";
 				character.description = p ? p[0] : "";
 				character.appareance = p ? p[1] : "";
 			}

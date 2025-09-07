@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const CharacterModel = require("./schemas/character.model");
 
 // import mongoose from "mongoose";
@@ -14,22 +14,16 @@ export type Character = {
 export type QueryType = {
 	$regex: string;
 	$options: string;
-}
+};
 export type FilterCharacters = {
 	name: QueryType;
 	year: number;
 	appareance: QueryType;
-}
+};
 
-exports.insertCharacters =  function(characters: Character[]) {
-	return CharacterModel.insertMany(characters);
-}
-exports.findCharacterById = function(id: string) {
-	return CharacterModel.findById(id);
-}
-exports.findCharacters = function (character: FilterCharacters) {
-	return CharacterModel.find(character);
-}
-exports.connect =  function() {
-	return mongoose.connect(process.env.MONGO_CONNECTION || '');
-}
+exports.insertCharacters = (characters: Character[]) =>
+	CharacterModel.insertMany(characters);
+exports.findCharacterById = (id: string) => CharacterModel.findById(id);
+exports.findCharacters = (character: FilterCharacters) =>
+	CharacterModel.find(character);
+exports.connect = () => mongoose.connect(process.env.MONGO_CONNECTION || "");
