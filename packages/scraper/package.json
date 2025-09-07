@@ -18,10 +18,11 @@
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
-    "playwright": "^1.54.2"
+    "playwright": "^1.54.2",
+    "@playwright/test": "^1.55.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0",
+
     "@types/node": "^20.11.17",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
