@@ -23,4 +23,7 @@ exports.insertCharacters = (characters: Character[]) =>
 exports.findCharacterById = (id: string) => CharacterModel.findById(id);
 exports.findCharacters = (character: FilterCharacters) =>
 	CharacterModel.find(character);
-exports.connect = () => mongoose.connect(process.env.MONGO_CONNECTION || "");
+exports.connect = () => {
+	console.log(process.env.MONGO_CONNECTION, 'Connecction 🌛🌛🌛🌛')
+	return mongoose.connect(process.env.MONGO_CONNECTION || "")
+};
