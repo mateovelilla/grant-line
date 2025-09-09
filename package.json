@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf pnpm-lock.yaml && rm -rf node_modules && pnpm -r exec rm -rf node_modules && pnpm -r exec rm -rf tsconfig.tsbuildinfo && pnpm -r exec rm -rf tsconfig.tsbuildinfo && pnpm recursive exec rm -rf dist",
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format"
   },
   "keywords": [],
   "author": "",

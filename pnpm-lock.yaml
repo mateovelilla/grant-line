@@ -62,9 +62,6 @@ importers:
       '@graphql-codegen/typescript-graphql-files-modules':
         specifier: ^3.0.1
         version: 3.0.1(graphql@16.11.0)
-      '@playwright/test':
-        specifier: ^1.55.0
-        version: 1.55.0
       '@types/node':
         specifier: ^20.11.17
         version: 20.19.13

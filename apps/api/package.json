@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@graphql-codegen/typescript-graphql-files-modules": "^3.0.1",
-    "@playwright/test": "^1.55.0",
     "@types/node": "^20.11.17",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
