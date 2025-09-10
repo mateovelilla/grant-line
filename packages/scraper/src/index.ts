@@ -48,7 +48,9 @@ class BaseScraper {
 	}
 	async extractColumns() {
 		const rows_raw: Locator[] = [];
-		const limit = this.CHARACTERS_LIMIT ? `:nth-of-type(-n+${this.CHARACTERS_LIMIT})` : ''
+		const limit = this.CHARACTERS_LIMIT
+			? `:nth-of-type(-n+${this.CHARACTERS_LIMIT})`
+			: "";
 		const locator = this.page?.locator(
 			`.fandom-table:nth-of-type(1) tbody tr${limit}`,
 		);
