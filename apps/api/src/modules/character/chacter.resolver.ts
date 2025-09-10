@@ -1,86 +1,14 @@
-const path = require("node:path");
-const { readFile } = require("node:fs/promises");
-const BaseScraper = require("@grant-line/scraper");
-import type { ExpectedColumn } from "@grant-line/scraper";
-import type { FilterCharacters } from "@grant-line/database";
-const {
-	insertCharacters,
-	findCharacterById,
-	findCharacters,
-} = require("@grant-line/database");
-
+const base_url = process.env.BASE_URL_SCRAPER || '';
+const list_url = base_url + process.env.LIST_URL_SCRAPER || '';
+const { CharacterController } = require("./character.controller")
+const {runScaper, findCharacter, findCharacters} = new CharacterController();
 const resolvers = {
 	Mutation: {
-		runScraper: async () => {
-			const base_url = "https://onepiece.fandom.com";
-			const list_url = `${base_url}/wiki/List_of_Canon_Characters`;
-			const path_characters = path.resolve(__dirname, "characters.json");
-			const expected_columns: ExpectedColumn[] = [
-				{ label: "Name", index: 0, type: "link" },
-				{ label: "Year", index: 0, type: null },
-				{ label: "Note", index: 0, type: null },
-			];
-			const baseScraper = new BaseScraper({
-				characters_limit: 5,
-				expected_columns,
-				base_url,
-				list_url,
-				path_characters,
-			});
-			const response = await baseScraper.init();
-			const data = await readFile(path_characters, "utf-8");
-			const json = JSON.parse(data);
-			const charactersMapped = json.map(
-				({
-					link,
-					Name,
-					Year,
-					Note,
-					img,
-					description,
-					appareance,
-				}: {
-					link: string;
-					Name: string;
-					Year: string;
-					Note: string;
-					img: string;
-					description: string;
-					appareance: string;
-				}) => ({
-					name: Name,
-					link,
-					year: Year,
-					note: Note,
-					img,
-					description,
-					appareance,
-				}),
-			);
-			await insertCharacters(charactersMapped);
-			return response;
-		},
+		runScraper: runScaper,
 	},
 	Query: {
-		character: async (_parent: unknown, args: { id: string }) => {
-			return await findCharacterById(args.id);
-		},
-		characters: async (
-			_parent: unknown,
-			args: { name: string; year: number; appareance: string },
-		) => {
-			const query: FilterCharacters = {} as FilterCharacters;
-			if (args.name) {
-				query.name = { $regex: args.name, $options: "i" };
-			}
-			if (args.year) {
-				query.year = args.year;
-			}
-			if (args.appareance) {
-				query.appareance = { $regex: args.appareance, $options: "i" };
-			}
-			return await findCharacters(query);
-		},
+		character: findCharacter,
+		characters: findCharacters,
 	},
 };
 module.exports = { resolvers };

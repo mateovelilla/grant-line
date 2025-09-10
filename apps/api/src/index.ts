@@ -1,8 +1,7 @@
 const { buildServer } = require("./server");
 const { connect } = require("@grant-line/database");
+import "dotenv/config";
 async function start() {
-	process.env.MONGO_CONNECTION =
-		"mongodb://admin:secret@192.168.56.20:27017/grant-line?authSource=admin";
 	await connect();
 	console.log("🍀 Mongo database connected!");
 	const app = await buildServer();

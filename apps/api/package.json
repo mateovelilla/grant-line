@@ -6,7 +6,7 @@
   "types": "./dist/src/index.d.ts",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "pnpm --filter api^... build && tsx watch src/index.ts",
     "build": "tsc -b && tsx src/utils/copy-graphql-files.ts",
     "start:typescript": "tsx src/index.ts",
     "start": "node ./dist/index.js",
@@ -27,11 +27,13 @@
     "@graphql-tools/utils": "^10.9.1",
     "fastify": "^5.5.0",
     "graphql": "^16.11.0",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "dotenv": "^17.2.2"
   },
   "devDependencies": {
     "@graphql-codegen/typescript-graphql-files-modules": "^3.0.1",
     "@types/node": "^20.11.17",
+
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
     "typescript": "^5.9.2"

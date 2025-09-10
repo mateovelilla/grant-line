@@ -28,7 +28,7 @@ class BaseScraper {
 	characters: Character[] | undefined;
 
 	constructor({
-		characters_limit = 10,
+		characters_limit,
 		expected_columns,
 		base_url,
 		list_url,
@@ -48,8 +48,9 @@ class BaseScraper {
 	}
 	async extractColumns() {
 		const rows_raw: Locator[] = [];
+		const limit = this.CHARACTERS_LIMIT ? `:nth-of-type(-n+${this.CHARACTERS_LIMIT})` : ''
 		const locator = this.page?.locator(
-			`.fandom-table:nth-of-type(1) tbody tr:nth-of-type(-n+${this.CHARACTERS_LIMIT})`,
+			`.fandom-table:nth-of-type(1) tbody tr${limit}`,
 		);
 		const header = this.page?.locator(".fandom-table:nth-of-type(1) thead th");
 		const headers = await header?.evaluateAll((elements) => {
