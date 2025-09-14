@@ -1,0 +1,9 @@
+# Apollo router file
+subgraphs:
+  accounts:
+    routing_url: http://subgraph-accounts:4001/graphql
+    headers:
+      all:
+        request:
+          static:
+            x-router-secret: ${SUBGRAPH_ROUTER_SECRET}

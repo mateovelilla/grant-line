@@ -5,6 +5,12 @@ const { typeDefs, resolvers } = require("./schema");
 
 exports.buildServer = async () => {
 	const fastify = Fastify();
+	fastify.addHook('onRequest', async(req,reply) => {
+		const header = req.headers['x-router-secret'];
+    	if (!header || header !== process.env.SUBGRAPH_ROUTER_SECRET) {
+      		reply.code(401).send({ error: 'Unauthorized' });
+    	}
+	})
 	const apollo = new ApolloServer({
 		typeDefs,
 		resolvers,
