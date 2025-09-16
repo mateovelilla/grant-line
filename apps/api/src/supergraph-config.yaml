@@ -1,0 +1,4 @@
+federation_version: 2
+subgraphs:
+  grant-line-service:
+    routing_url: http://localhost:4002/graphql
