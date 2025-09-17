@@ -6,7 +6,7 @@ async function start() {
 	console.log("🍀 Mongo database connected!");
 	const app = await buildServer();
 	app
-		.listen({ port: 4002, host: "0.0.0.0" })
+		.listen({ port: 4000, host: "0.0.0.0" })
 		.then(() => {
 			console.log("🚀 Server ready at http://localhost:4000/graphql");
 		})

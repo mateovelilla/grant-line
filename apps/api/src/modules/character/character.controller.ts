@@ -70,10 +70,10 @@ class CharacterController {
 		}
 		return await findCharacterById(args.id);
 	};
-	async findCharacters(
+	findCharacters = async (
 		_parent: unknown,
 		args: { name: string; year: number; appareance: string },
-	) {
+	) => {
 		const characters = await countCharacters();
 		if (!characters) {
 			await this.runScaper();
