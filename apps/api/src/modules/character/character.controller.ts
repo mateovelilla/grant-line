@@ -72,7 +72,13 @@ class CharacterController {
 	};
 	findCharacters = async (
 		_parent: unknown,
-		args: { name: string; year: number; appareance: string },
+		args: {
+			name: string;
+			year: number;
+			appareance: string;
+			offset: number;
+			limit: number;
+		},
 	) => {
 		const characters = await countCharacters();
 		if (!characters) {
@@ -88,7 +94,17 @@ class CharacterController {
 		if (args.appareance) {
 			query.appareance = { $regex: args.appareance, $options: "i" };
 		}
+		if (!args.offset) {
+			query.offset = 0;
+		} else {
+			query.offset = args.offset;
+		}
+		if (!args.limit) {
+			query.limit = process.env.DEFAULT_LIMIT || 10;
+		} else {
+			query.limit = args.limit;
+		}
 		return await findCharacters(query);
-	}
+	};
 }
 module.exports = { CharacterController };

@@ -17,5 +17,11 @@ extend type Mutation {
 
 extend type Query {
 	character(id: ID!): Character
-	characters(name: String, year: Int, appareance: String): [Character!]!
+	characters(
+		name: String
+		year: Int
+		appareance: String
+		offset: Int
+		limit: Int
+	): [Character!]!
 }

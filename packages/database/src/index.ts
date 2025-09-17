@@ -16,13 +16,17 @@ export type FilterCharacters = {
 	name: QueryType;
 	year: number;
 	appareance: QueryType;
+	limit: number;
+	offset: number;
 };
 
 exports.insertCharacters = (characters: Character[]) =>
 	CharacterModel.insertMany(characters);
 exports.findCharacterById = (id: string) => CharacterModel.findById(id);
-exports.findCharacters = (character: FilterCharacters) =>
-	CharacterModel.find(character);
+exports.findCharacters = ({ limit, offset, ...params }: FilterCharacters) => {
+	console.log({ limit, offset }, params);
+	return CharacterModel.find(params).skip(offset).limit(limit);
+};
 exports.countCharacters = () => CharacterModel.countDocuments({});
 exports.connect = () => {
 	console.log(process.env.MONGO_CONNECTION, "Connecction 🌛🌛🌛🌛");

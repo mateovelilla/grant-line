@@ -6,7 +6,7 @@ const resolvers = {
 	},
 	Query: {
 		character: findCharacter,
-		characters: findCharacters
+		characters: findCharacters,
 	},
 };
 module.exports = { resolvers };
