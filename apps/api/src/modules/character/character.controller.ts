@@ -94,16 +94,8 @@ class CharacterController {
 		if (args.appareance) {
 			query.appareance = { $regex: args.appareance, $options: "i" };
 		}
-		if (!args.offset) {
-			query.offset = 0;
-		} else {
-			query.offset = args.offset;
-		}
-		if (!args.limit) {
-			query.limit = process.env.DEFAULT_LIMIT || 10;
-		} else {
-			query.limit = args.limit;
-		}
+		query.offset = args.offset || 0 
+		query.limit = args.limit || Number.parseInt(process.env.DEFAULT_LIMIT || '0')
 		return await findCharacters(query);
 	};
 }

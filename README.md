@@ -9,10 +9,9 @@
     * [ ] Figma Design
 - Backend:
     * [ ] Apply Metrics
-    - GraphQL:
-        * [ ] Authentication
-        * [ ] Authorization
-        * [ ] Pagination
-        * [ ] Cache
-        * [ ] Rate limit
     
+---
+```bash
+$ docker build . --target api --tag api:latest
+$ docker run -d -p 4000:4000 --name api api
+```

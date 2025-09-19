@@ -1,14 +1,20 @@
 const Fastify = require("fastify");
-import rateLimit from "@fastify/rate-limit";
-import jwt from "jsonwebtoken";
+const rateLimit = require("@fastify/rate-limit");
+const jwt = require("jsonwebtoken");
 const { ApolloServer } = require("@apollo/server");
-import fastifyApollo, {
-	fastifyApolloDrainPlugin,
+const fastifyApollo = require("@as-integrations/fastify").default
+import {
+// 	fastifyApolloDrainPlugin,
 	type ApolloFastifyContextFunction,
 } from "@as-integrations/fastify";
 
 const { typeDefs, resolvers } = require("./schema");
-const isAuthorized = (authHeader) => {
+
+
+interface Context {
+  authorization: { user: any; };
+}
+const isAuthorized = (authHeader: string | null) => {
 	const token = authHeader ? authHeader.slice(7) : null;
 	if (!token) {
 		throw new Error("No token provided");
@@ -20,7 +26,7 @@ const isAuthorized = (authHeader) => {
 		throw new Error("Invalid or expired token");
 	}
 };
-const context: ApolloFastifyContextFunction = async (request, _reply) => ({
+const context: ApolloFastifyContextFunction<Context> = async (request: any, _reply: any) => ({
 	authorization: await isAuthorized(request.headers.authorization),
 });
 
@@ -35,7 +41,7 @@ exports.buildServer = async () => {
 		typeDefs,
 		resolvers,
 		introspection: process.env.NODE_ENV !== "production",
-		formatError: (_formattedError, error) => {
+		formatError: (_formattedError: any, error: { message: any; path: any; stack: any; }) => {
 			// Obfuscating error details
 			console.error("GraphQL Error:", {
 				message: error.message,
@@ -47,7 +53,7 @@ exports.buildServer = async () => {
 				extensions: { code: "INTERNAL_SERVER_ERROR" },
 			};
 		},
-		plugins: [fastifyApolloDrainPlugin(fastify)],
+		plugins: [fastifyApollo.fastifyApolloDrainPlugin(fastify)],
 	});
 	await apollo.start();
 	await fastify.register(fastifyApollo(apollo), {

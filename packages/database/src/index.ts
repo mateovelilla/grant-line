@@ -24,7 +24,6 @@ exports.insertCharacters = (characters: Character[]) =>
 	CharacterModel.insertMany(characters);
 exports.findCharacterById = (id: string) => CharacterModel.findById(id);
 exports.findCharacters = ({ limit, offset, ...params }: FilterCharacters) => {
-	console.log({ limit, offset }, params);
 	return CharacterModel.find(params).skip(offset).limit(limit);
 };
 exports.countCharacters = () => CharacterModel.countDocuments({});
