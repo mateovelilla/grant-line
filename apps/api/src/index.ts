@@ -1,5 +1,5 @@
-const { buildServer } = require("./server");
-const { connect } = require("@grant-line/database");
+import { buildServer } from "./server.js";
+import { connect } from "@grant-line/database";
 import "dotenv/config";
 async function start() {
 	await connect();

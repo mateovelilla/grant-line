@@ -1,5 +1,8 @@
-const fs = require("node:fs");
-const path = require("node:path");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
 
 const SRC_DIR = path.join(__dirname, "../../src");
 const DIST_DIR = path.join(__dirname, "../../dist");

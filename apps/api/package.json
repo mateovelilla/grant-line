@@ -5,6 +5,7 @@
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "pnpm --filter api^... build && tsx watch src/index.ts",
     "build": "tsc -b && tsx src/utils/copy-graphql-files.ts",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/typescript-graphql-files-modules": "^3.0.1",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.11.17",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",

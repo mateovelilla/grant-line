@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const CharacterModel = require("./schemas/character.model");
+const CharacterModel = require("./schemas/character.model.js");
 export type Character = {
 	name?: string;
 	year?: number;
@@ -27,7 +27,10 @@ exports.findCharacters = ({ limit, offset, ...params }: FilterCharacters) => {
 	return CharacterModel.find(params).skip(offset).limit(limit);
 };
 exports.countCharacters = () => CharacterModel.countDocuments({});
-exports.connect = () => {
+const connect = () => {
 	console.log(process.env.MONGO_CONNECTION, "Connecction 🌛🌛🌛🌛");
 	return mongoose.connect(process.env.MONGO_CONNECTION || "");
+};
+export {
+	 connect
 };
