@@ -8,7 +8,5 @@ const resolvers = {
 		character: findCharacter,
 		characters: findCharacters,
 	},
-}
-export {
-	resolvers
-}
+};
+export { resolvers };

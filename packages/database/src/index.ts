@@ -32,9 +32,9 @@ const connect = () => {
 	return mongoose.connect(process.env.MONGO_CONNECTION || "");
 };
 export {
-	 connect,
-	 insertCharacters,
-	 findCharacterById,
-	 findCharacters,
-	 countCharacters
+	connect,
+	insertCharacters,
+	findCharacterById,
+	findCharacters,
+	countCharacters,
 };

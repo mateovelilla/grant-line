@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { __dirname } from "./dirname.js";
-const importUrl = import.meta.url
+const importUrl = import.meta.url;
 
 const SRC_DIR = path.join(__dirname(importUrl), "../../src");
 const DIST_DIR = path.join(__dirname(importUrl), "../../dist");

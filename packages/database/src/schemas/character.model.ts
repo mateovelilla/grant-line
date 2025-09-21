@@ -13,6 +13,4 @@ const character = new Schema({
 });
 const CharacterModel = model("character", character);
 
-export {
-	CharacterModel
-}
+export { CharacterModel };

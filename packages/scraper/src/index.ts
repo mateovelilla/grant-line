@@ -174,6 +174,4 @@ class BaseScraper {
 		return response;
 	}
 }
-export {
-	BaseScraper
-}
+export { BaseScraper };

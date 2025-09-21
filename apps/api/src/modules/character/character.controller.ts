@@ -8,14 +8,17 @@ import {
 	insertCharacters,
 	findCharacterById,
 	findCharacters,
-	countCharacters
+	countCharacters,
 } from "@grant-line/database";
 
 class CharacterController {
 	runScaper = async () => {
 		const base_url = process.env.BASE_URL_SCRAPER || "";
 		const list_url = base_url + process.env.LIST_URL_SCRAPER || "";
-		const path_characters = path.resolve(__dirname(import.meta.url), "characters.json");
+		const path_characters = path.resolve(
+			__dirname(import.meta.url),
+			"characters.json",
+		);
 		const expected_columns: ExpectedColumn[] = [
 			{ label: "Name", index: 0, type: "link" },
 			{ label: "Year", index: 0, type: null },
@@ -96,11 +99,10 @@ class CharacterController {
 		if (args.appareance) {
 			query.appareance = { $regex: args.appareance, $options: "i" };
 		}
-		query.offset = args.offset || 0 
-		query.limit = args.limit || Number.parseInt(process.env.DEFAULT_LIMIT || '0')
+		query.offset = args.offset || 0;
+		query.limit =
+			args.limit || Number.parseInt(process.env.DEFAULT_LIMIT || "0");
 		return await findCharacters(query);
 	};
 }
-export {
-	CharacterController
-}
+export { CharacterController };
