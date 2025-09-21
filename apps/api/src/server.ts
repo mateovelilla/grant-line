@@ -4,7 +4,7 @@ import jwt,{ type JwtPayload } from "jsonwebtoken";
 import { ApolloServer } from "@apollo/server";
 import fastifyApollo from "@as-integrations/fastify";
 import type { ApolloFastifyContextFunction } from "@as-integrations/fastify";
-const { typeDefs, resolvers } = require("./schema");
+import { typeDefs, resolvers } from "./schema/index.js";
 interface MyContext {
   authorization: JwtPayload | string;
 }
@@ -28,10 +28,6 @@ const myContextFunction: ApolloFastifyContextFunction<MyContext> = async (reques
   authorization: await isAuthorized(request.headers.authorization),
 });
 
-const context = async (request: any, _reply: any) => ({
-	authorization: await isAuthorized(request.headers.authorization),
-});
-
 const buildServer = async () => {
 	const fastify = Fastify();
 	fastify.register(rateLimit, {
@@ -39,6 +35,7 @@ const buildServer = async () => {
 		timeWindow: "1 minute",
 		// allowList: ["127.0.0.1"], // TODO:
 	});
+	console.log(typeDefs,resolvers)
 	const apollo = new ApolloServer<MyContext>({
 		typeDefs,
 		resolvers,

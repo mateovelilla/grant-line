@@ -1,6 +1,6 @@
+import "dotenv/config";
 import { buildServer } from "./server.js";
 import { connect } from "@grant-line/database";
-import "dotenv/config";
 async function start() {
 	await connect();
 	console.log("🍀 Mongo database connected!");

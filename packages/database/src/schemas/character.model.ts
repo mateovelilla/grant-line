@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+import { model, Schema } from "mongoose";
 
 const character = new Schema({
 	name: String,
@@ -13,4 +13,6 @@ const character = new Schema({
 });
 const CharacterModel = model("character", character);
 
-module.exports = CharacterModel;
+export {
+	CharacterModel
+}

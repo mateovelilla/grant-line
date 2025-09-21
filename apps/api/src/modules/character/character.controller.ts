@@ -1,19 +1,21 @@
-const path = require("node:path");
-const { readFile, unlink } = require("node:fs/promises");
-const BaseScraper = require("@grant-line/scraper");
+import path from "node:path";
+import { readFile, unlink } from "node:fs/promises";
+import { __dirname } from "../../utils/dirname.js";
+import { BaseScraper } from "@grant-line/scraper";
 import type { ExpectedColumn } from "@grant-line/scraper";
 import type { FilterCharacters } from "@grant-line/database";
-const {
+import {
 	insertCharacters,
 	findCharacterById,
 	findCharacters,
-	countCharacters,
-} = require("@grant-line/database");
+	countCharacters
+} from "@grant-line/database";
+
 class CharacterController {
 	runScaper = async () => {
 		const base_url = process.env.BASE_URL_SCRAPER || "";
 		const list_url = base_url + process.env.LIST_URL_SCRAPER || "";
-		const path_characters = path.resolve(__dirname, "characters.json");
+		const path_characters = path.resolve(__dirname(import.meta.url), "characters.json");
 		const expected_columns: ExpectedColumn[] = [
 			{ label: "Name", index: 0, type: "link" },
 			{ label: "Year", index: 0, type: null },
@@ -99,4 +101,6 @@ class CharacterController {
 		return await findCharacters(query);
 	};
 }
-module.exports = { CharacterController };
+export {
+	CharacterController
+}

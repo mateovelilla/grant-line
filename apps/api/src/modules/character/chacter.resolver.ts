@@ -1,4 +1,4 @@
-const { CharacterController } = require("./character.controller");
+import { CharacterController } from "./character.controller.js";
 const { runScaper, findCharacter, findCharacters } = new CharacterController();
 const resolvers = {
 	Mutation: {
@@ -8,5 +8,7 @@ const resolvers = {
 		character: findCharacter,
 		characters: findCharacters,
 	},
-};
-module.exports = { resolvers };
+}
+export {
+	resolvers
+}

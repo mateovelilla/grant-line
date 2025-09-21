@@ -1,18 +1,24 @@
-const path = require("node:path");
-const { loadFilesSync } = require("@graphql-tools/load-files");
-const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
 
+import path  from "node:path";
+import { loadFilesSync, loadFiles } from "@graphql-tools/load-files";
+import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
+import { __dirname } from "../utils/dirname.js";
+const importUrl = import.meta.url
 const typesArray = loadFilesSync([
-	path.join(__dirname, "./typeDefs"),
-	path.join(__dirname, "../modules/**/*.graphql"),
+	path.join(__dirname(importUrl), "./typeDefs/*.graphql"),
+	path.join(__dirname(importUrl), "../modules/**/*.graphql")
 ]);
+const resolversArray = await loadFiles([
+	path.join(__dirname(importUrl), "./resolvers"),
+	path.join(__dirname(importUrl), "../modules/**/*.resolver.*"),
+], {
+	requireMethod: (path: string) => import(path),
+	extensions: ["js"] 
+});
 
-const resolversArray = loadFilesSync([
-	path.join(__dirname, "./resolvers"),
-	path.join(__dirname, "../modules/**/*.resolver.*"),
-]);
-
-module.exports = {
-	typeDefs: mergeTypeDefs(typesArray),
-	resolvers: mergeResolvers(resolversArray),
-};
+const typeDefs = await mergeTypeDefs(typesArray);
+const resolvers = await mergeResolvers(resolversArray)
+export {
+	typeDefs,
+	resolvers
+} 

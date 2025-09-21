@@ -1,7 +1,7 @@
 import type { Browser, Page, Locator } from "playwright";
-const { writeFile } = require("node:fs/promises");
-const { chromium } = require("@playwright/test");
-const { existsSync } = require("node:fs");
+import { writeFile } from "node:fs/promises";
+import { chromium } from "@playwright/test";
+import { existsSync } from "node:fs";
 export type ExpectedColumn = {
 	label: string;
 	index: number;
@@ -174,4 +174,6 @@ class BaseScraper {
 		return response;
 	}
 }
-module.exports = BaseScraper;
+export {
+	BaseScraper
+}

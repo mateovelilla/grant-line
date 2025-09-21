@@ -1,11 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
+import { __dirname } from "./dirname.js";
+const importUrl = import.meta.url
 
-const SRC_DIR = path.join(__dirname, "../../src");
-const DIST_DIR = path.join(__dirname, "../../dist");
+const SRC_DIR = path.join(__dirname(importUrl), "../../src");
+const DIST_DIR = path.join(__dirname(importUrl), "../../dist");
 
 function copyGraphqlFiles(srcDir: string, distDir: string) {
 	if (!fs.existsSync(distDir)) {
