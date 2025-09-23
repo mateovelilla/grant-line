@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+      target: api  
+    container_name: api
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: ${PORT}
+      MONGO_CONNECTION: ${MONGO_CONNECTION}
+      CHARACTERS_LIMIT: ${CHARACTERS_LIMIT}
+      BASE_URL_SCRAPER: ${BASE_URL_SCRAPER}
+      LIST_URL_SCRAPER: ${LIST_URL_SCRAPER}
+      JWT_SECRET: ${JWT_SECRET}
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+    depends_on:
+      - database
+    restart: unless-stopped
+    networks:
+      - backend
+  database:
+    image: mongo:latest
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+volumes:
+  mongo_data:
+networks:
+  backend:
+    driver: bridge

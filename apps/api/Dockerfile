@@ -38,6 +38,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate \
 FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
+RUN ls -al
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 RUN pnpm --filter scraper exec playwright install --with-deps
 RUN pnpm run -r build

@@ -4,6 +4,8 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 import { ApolloServer } from "@apollo/server";
 import fastifyApollo from "@as-integrations/fastify";
 import type { ApolloFastifyContextFunction } from "@as-integrations/fastify";
+import type {GraphQLFormattedError} from 'graphql'
+import type { ApolloServerErrorCode } from '@apollo/server/errors';
 import { typeDefs, resolvers } from "./schema/index.js";
 interface MyContext {
 	authorization: JwtPayload | string;
@@ -38,12 +40,11 @@ const buildServer = async () => {
 		timeWindow: "1 minute",
 		// allowList: ["127.0.0.1"], // TODO:
 	});
-	console.log(typeDefs, resolvers);
 	const apollo = new ApolloServer<MyContext>({
 		typeDefs,
 		resolvers,
 		introspection: process.env.NODE_ENV !== "production",
-		formatError: (_formattedError, error) => {
+		formatError: (_formattedError: GraphQLFormattedError, error: any) => {
 			// Obfuscating error details
 			console.error("GraphQL Error:", {
 				message: error.message,
