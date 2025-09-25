@@ -4,8 +4,7 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 import { ApolloServer } from "@apollo/server";
 import fastifyApollo from "@as-integrations/fastify";
 import type { ApolloFastifyContextFunction } from "@as-integrations/fastify";
-import type {GraphQLFormattedError} from 'graphql'
-import type { ApolloServerErrorCode } from '@apollo/server/errors';
+import type { GraphQLFormattedError } from "graphql";
 import { typeDefs, resolvers } from "./schema/index.js";
 interface MyContext {
 	authorization: JwtPayload | string;

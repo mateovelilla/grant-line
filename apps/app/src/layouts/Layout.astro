@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css"
+import "../styles/global.css";
 import "../assets/app.css";
 ---
 <!doctype html>
@@ -12,6 +12,8 @@ import "../assets/app.css";
 		<title>The Grant Line</title>
 	</head>
 	<body class="bg-base-100">
-		<slot />
+		<div id="container" class="w-full h-full grid grid-rows-[auto_1fr_auto] gap-2 [grid-template-areas:'header''main''footer']">
+			<slot />
+		</div>
 	</body>
 </html>
