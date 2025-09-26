@@ -1,5 +1,19 @@
 version: '3.9'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: ./apps/app/Dockerfile
+      target: app
+    container_name: app
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+      - api
+    restart: unless-stopped:
+    networks:
+      - backend
   api:
     build:
       context: .
