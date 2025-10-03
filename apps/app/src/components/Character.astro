@@ -1,0 +1,43 @@
+---
+import "atropos/atropos.css";
+---
+ <div class="atropos my-atropos-card">
+    <div class="atropos-scale">
+        <div class="atropos-rotate">
+            <div class="atropos-inner">
+                <div class="atropos-content-container card bg-secondary w-96 shadow-sm bg-base-200">
+                    <figure data-atropos-offset="5" class="m-2">
+                        <img
+                            class="object-fit w-full h-full"
+                            src="https://static.wikia.nocookie.net/onepiece/images/f/f1/Abdullah_Anime_Infobox.png"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body items-center" data-atropos-offset="0">
+                        <h2 class="card-title text-center">Card Title</h2>
+                        <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+import { Atropos } from 'atropos';
+
+// Initialize
+Atropos({
+    el: '.my-atropos-card',
+    activeOffset: 40,
+    shadow: false,
+    highlight: true,
+  // rest of parameters
+});
+</script>
+<style>
+.my-atropos-card {
+  width: 100%;
+  height: 100%;
+}
+</style>

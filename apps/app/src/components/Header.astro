@@ -1,1 +1,50 @@
-<header class="header [grid-area:header] bg-primary">Header</header>
+---
+import "atropos/atropos.css";
+---
+<header class="header [grid-area:header] bg-base-100 max-h-80">
+
+                    <!--
+                    Element with negative offset will move in reverse direction,
+                    making it appear behind the scene
+                    -->
+        <div class="atropos my-atropos">
+        <div class="atropos-scale">
+            <div class="atropos-rotate">
+                <div class="atropos-inner">
+                    <div class="atropos-content-container">
+                    <img src="/images/waves.png" class="w-full h-full" data-atropos-offset="-5"/>
+                    <img src="/images/thousand_sunny_comic.svg" class="h-40 boat" data-atropos-offset="0"/>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+<script>
+import { Atropos } from 'atropos';
+
+// Initialize
+Atropos({
+    el: '.my-atropos',
+    activeOffset: 40,
+    shadow: false,
+    highlight: true,
+  // rest of parameters
+});
+</script>
+<style>
+.my-atropos {
+    width: 300px;
+    height: 200px;
+    margin: 50px auto;
+    position: relative;
+}
+.my-atropos .boat {
+    position: absolute;
+    bottom: 20px;
+    left: 200px;
+}
+</style>
