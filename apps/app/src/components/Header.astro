@@ -7,6 +7,7 @@ import "atropos/atropos.css";
                     Element with negative offset will move in reverse direction,
                     making it appear behind the scene
                     -->
+         <!--
         <div class="atropos my-atropos">
         <div class="atropos-scale">
             <div class="atropos-rotate">
@@ -20,31 +21,5 @@ import "atropos/atropos.css";
         </div>
     </div>
 
-
+-->
 </header>
-
-<script>
-import { Atropos } from 'atropos';
-
-// Initialize
-Atropos({
-    el: '.my-atropos',
-    activeOffset: 40,
-    shadow: false,
-    highlight: true,
-  // rest of parameters
-});
-</script>
-<style>
-.my-atropos {
-    width: 300px;
-    height: 200px;
-    margin: 50px auto;
-    position: relative;
-}
-.my-atropos .boat {
-    position: absolute;
-    bottom: 20px;
-    left: 200px;
-}
-</style>

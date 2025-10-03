@@ -1,9 +1,13 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: dark --default, dark --prefersdark, dim;
+}
+
+/**
 @plugin "daisyui/theme" {
 	name: "mytheme";
-	default: true; /* set as default */
-	prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+	default: true; 
+	prefersdark: false;
 	--color-base-100: oklch(0.325 0.0596 254.92);
 	--color-base-200: oklch(95% 0.03 240);
 	--color-base-300: oklch(92% 0.04 240);
@@ -25,19 +29,19 @@
 	--color-error: oklch(65% 0.3 30);
 	--color-error-content: oklch(98% 0.01 30);
 
-	/* border radius */
+
 	--radius-selector: 1rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
 
-	/* base sizes */
+
 	--size-selector: 0.25rem;
 	--size-field: 0.25rem;
 
-	/* border size */
+
 	--border: 1px;
 
-	/* effects */
 	--depth: 1;
 	--noise: 0;
 }
+**/
