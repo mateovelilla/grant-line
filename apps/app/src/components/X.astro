@@ -10,14 +10,18 @@ const colors = [
 const cards = Array.from({ length: 50 }, (_, i) => ({
 	title: `Card ${i + 1}`,
 	color: colors[Math.floor(Math.random() * colors.length)],
-	height: Math.floor(Math.random() * 200) + 200,
+	height: Math.floor(Math.random() * 200) + 200, // random height 200–400px
 }));
 ---
-<div
-    class={`relative overflow-hidden transition duration-300 group mb-4 break-inside-avoid rounded-2xl shadow-md hover:shadow-lg ${c.color}`}
-    style={`height:${c.height}px`}
->
-<div class="flex transition-transform duration-500 group-hover:scale-110 items-center justify-center h-full text-xl font-bold p-0.5">
+
+<section>
+  <div class="columns-1 sm:columns-2 lg:columns-4 gap-3">
+    {cards.map(c => (
+      <div
+        class={`relative overflow-hidden transition duration-300 group mb-4 break-inside-avoid rounded-2xl shadow-md hover:shadow-lg ${c.color}`}
+        style={`height:${c.height}px`}
+      >
+        <div class="flex transition-transform duration-500 group-hover:scale-110 items-center justify-center h-full text-xl font-bold p-0.5">
             <img
                 class={`object-fit h-full w-full rounded-2xl`}
                 src="https://static.wikia.nocookie.net/onepiece/images/f/f1/Abdullah_Anime_Infobox.png"
@@ -39,3 +43,6 @@ const cards = Array.from({ length: 50 }, (_, i) => ({
         <p class="text-gray-200 text-sm">description</p>
         </div>
       </div>
+    ))}
+  </div>
+</section>
