@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   app:
     build:
@@ -11,14 +10,14 @@ services:
     depends_on:
       - database
       - api
-    restart: unless-stopped:
+    restart: unless-stopped
     networks:
       - backend
   api:
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
-      target: api  
+      target: api
     container_name: api
     ports:
       - "4000:4000"

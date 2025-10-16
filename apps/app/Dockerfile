@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     ca-certificates \
-    fonts-liberation \
+    fonts-liberation
 COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm add -g playwright \
@@ -19,7 +19,7 @@ RUN ls -al
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 RUN pnpm --filter scraper exec playwright install --with-deps
 RUN pnpm run -r build
-RUN pnpm --filter=app deploy --prod /prod/api --legacy
+RUN pnpm --filter=app deploy --prod /prod/app --legacy
 
 FROM base AS app
 COPY --from=build /prod/app /prod/app

@@ -44,7 +44,7 @@ RUN pnpm --filter scraper exec playwright install --with-deps
 RUN pnpm run -r build
 RUN pnpm --filter=api deploy --prod /prod/api --legacy
 
-FROM base AS api
+FROM build AS api
 COPY --from=build /prod/api /prod/api
 WORKDIR /prod/api
 EXPOSE 4000
